@@ -1,6 +1,7 @@
 # AI-Powered Background Removal System
 
 A scalable, high-performance, full-stack AI-powered background removal system using Go, Python, and modern frontend technologies. This system handles high-concurrency requests, optimizes resource utilization, and delivers fast, efficient, and responsive image processing.
+![image](https://github.com/user-attachments/assets/e6e572a1-595c-41c7-9f90-61d58d0519a4)
 
 ## Features
 
