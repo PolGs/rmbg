@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rembg-processor
+  labels:
+    app: rembg-processor
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rembg-processor
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: rembg-processor
+    spec:
+      containers:
+      - name: processor
+        image: ${DOCKER_REGISTRY}/rembg-processor:latest
+        env:
+        - name: REDIS_URL
+          value: "redis-service:6379"
+        - name: NUM_WORKERS
+          value: "2"
+        - name: RESULTS_DIR
+          value: "/app/results"
+        volumeMounts:
+        - name: uploads-volume
+          mountPath: /app/uploads
+        - name: results-volume
+          mountPath: /app/results
+        resources:
+          limits:
+            cpu: "2"
+            memory: "2Gi"
+          requests:
+            cpu: "1"
+            memory: "1Gi"
+      volumes:
+      - name: uploads-volume
+        persistentVolumeClaim:
+          claimName: uploads-pvc
+      - name: results-volume
+        persistentVolumeClaim:
+          claimName: results-pvc 
